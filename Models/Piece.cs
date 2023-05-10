@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -49,6 +51,10 @@ namespace SodaPop.Models
         [Column("date_publish")]
         [MaxLength(80)]
         public DateTime DatePublish { get; set; }
+
+        public ICollection<Character> Characters { get; set; }
+
+       
 
     }
 }

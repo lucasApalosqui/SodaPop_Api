@@ -14,5 +14,14 @@ namespace SodaPop.Context
         public DbSet<Piece> Tbl_Piece { get; set; }
         public DbSet<Character> Tbl_Character { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelbuilder)
+        {
+            modelbuilder.Entity<Piece>()
+                .HasMany(e => e.Characters)
+                .WithOne(e => e.piece)
+                .HasForeignKey(e => e.IdPiece)
+                .HasPrincipalKey(e => e.IdPiece);
+        }
+
     }
 }

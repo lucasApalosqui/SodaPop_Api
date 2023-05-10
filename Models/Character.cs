@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,5 +20,11 @@ namespace SodaPop.Models
         [Column("character_name")]
         [MaxLength(80)]
         public string CharacterName { get; set; }
+
+        [Column("id_piece")]
+        public int IdPiece { get; set; }
+
+        public Piece piece { get; set; }
+
     }
 }
