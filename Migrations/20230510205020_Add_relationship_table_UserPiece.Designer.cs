@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SodaPop.Context;
 
 namespace SodaPop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230510205020_Add_relationship_table_UserPiece")]
+    partial class Add_relationship_table_UserPiece
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,15 +180,6 @@ namespace SodaPop.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<double>("Score")
-                        .HasColumnType("float")
-                        .HasColumnName("score");
-
-                    b.Property<string>("review")
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)")
-                        .HasColumnName("review");
 
                     b.HasKey("PieceId", "UserId");
 

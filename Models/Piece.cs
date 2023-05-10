@@ -54,7 +54,7 @@ namespace SodaPop.Models
 
         public ICollection<Character> Characters { get; set; }
 
-       
+        public List<User> Users { get; } = new();
 
     }
 }
