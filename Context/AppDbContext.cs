@@ -11,5 +11,6 @@ namespace SodaPop.Context
         }
 
         public DbSet<User> Tbl_User { get; set; }
+        public DbSet<Piece> Tbl_Piece { get; set; }
     }
 }

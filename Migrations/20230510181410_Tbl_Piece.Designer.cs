@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SodaPop.Context;
 
 namespace SodaPop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230510181410_Tbl_Piece")]
+    partial class Tbl_Piece
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,11 +32,6 @@ namespace SodaPop.Migrations
                     b.Property<double>("AverageScore")
                         .HasColumnType("float")
                         .HasColumnName("average_score");
-
-                    b.Property<DateTime>("DatePublish")
-                        .HasMaxLength(80)
-                        .HasColumnType("datetime2")
-                        .HasColumnName("date_publish");
 
                     b.Property<DateTime>("DateRelease")
                         .HasColumnType("datetime2")
