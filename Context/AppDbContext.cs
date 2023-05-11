@@ -14,6 +14,7 @@ namespace SodaPop.Context
         public DbSet<Piece> Tbl_Piece { get; set; }
         public DbSet<Character> Tbl_Character { get; set; }
         public DbSet<UserPiece> Tbl_User_Piece { get; set; }
+        public DbSet<Login> Tbl_Login { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelbuilder)
