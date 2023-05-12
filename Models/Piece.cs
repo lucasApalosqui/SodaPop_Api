@@ -18,6 +18,10 @@ namespace SodaPop.Models
         [MaxLength(80)]
         public string PieceName { get; set; }
 
+        [Column("piece_type")]
+        [MaxLength(40)]
+        public string PieceType { get; set; }
+
         [Column("image_banner")]
         [MaxLength(80)]
         public string ImageBanner { get; set; }
