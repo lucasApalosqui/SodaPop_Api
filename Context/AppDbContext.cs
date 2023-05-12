@@ -31,6 +31,12 @@ namespace SodaPop.Context
                 .UsingEntity<UserPiece>(
                     l => l.HasOne<Piece>().WithMany().HasForeignKey(e => e.PieceId),
                     r => r.HasOne<User>().WithMany().HasForeignKey(e => e.UserId));
+
+            modelbuilder.Entity<Login>()
+                .HasOne(e => e.UserLogin)
+                .WithOne(e => e.Login)
+                .HasForeignKey<User>(e => e.IdLogin)
+                .IsRequired();
         }
 
     }

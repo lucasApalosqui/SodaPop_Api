@@ -14,6 +14,8 @@ namespace SodaPop.Models
 
         [Column("review")]
         [MaxLength(400)]
-        public string review { get; set; }
+        public string Review { get; set; }
+
+
     }
 }

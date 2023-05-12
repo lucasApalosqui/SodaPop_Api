@@ -22,5 +22,7 @@ namespace SodaPop.Models
         [MinLength(5)]
         [NotNull]
         public string Password { get; set; }
+
+        public User? UserLogin { get; set; }
     }
 }

@@ -54,7 +54,12 @@ namespace SodaPop.Models
         [MaxLength(80)]
         public string LovelyCharacter { get; set; }
 
+        [Column("id_login")]
+        public int IdLogin { get; set; }
+
         public List<Piece> Pieces { get; } = new();
+
+        public Login Login { get; set; } = null!;
 
 
     }
