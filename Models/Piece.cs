@@ -1,9 +1,11 @@
-﻿using Microsoft.VisualBasic;
+﻿using BCrypt.Net;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection.Metadata;
 
 namespace SodaPop.Models
 {
@@ -59,6 +61,8 @@ namespace SodaPop.Models
         public ICollection<Character> Characters { get; set; }
 
         public List<User> Users { get; } = new();
+
+
 
     }
 }

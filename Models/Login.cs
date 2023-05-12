@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -24,5 +25,17 @@ namespace SodaPop.Models
         public string Password { get; set; }
 
         public User? UserLogin { get; set; }
+
+
+        public void DefinePassword(String password)
+        {
+            string hashPass = BCrypt.Net.BCrypt.HashPassword(password);
+            password = hashPass;
+        }
+
+        public bool VerifyPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, Password);
+        }
     }
 }
