@@ -21,19 +21,16 @@ namespace SodaPop.Services
         Task<IEnumerable<Piece>> GetPiecesByType(string type);
 
         // Search for the pieces with the highest average rating
-        Task<IEnumerable<Piece>> GetPiecesByMostRated(double averageRate);
+        Task<IEnumerable<Piece>> GetPiecesByMostRated();
 
         // Create new piece in a site
         Task CreatePiece(Piece piece);
 
-        // Update a existing piece ina  site
+        // Update a existing piece in a site
         Task UpdatePiece(Piece piece);
 
-        // Delete a existing piece ina  site
+        // Delete a existing piece in a site
         Task DeletePiece(Piece piece);
-
-
-
-
+        
     }
 }

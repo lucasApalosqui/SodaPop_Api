@@ -83,7 +83,7 @@ namespace SodaPop.Services
         }
 
         // get Pieces by descending most rated
-        public async Task<IEnumerable<Piece>> GetPiecesByMostRated(double averageRate)
+        public async Task<IEnumerable<Piece>> GetPiecesByMostRated()
         {
             try
             {
