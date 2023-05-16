@@ -110,13 +110,30 @@ namespace SodaPop.Controllers
                 var pieces = await _pieceService.GetPiecesByMostRated();
                 return Ok(pieces);
             }
+            catch
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
+
+            }
+
+
+        }
+
+        [HttpPost("CreatePiece")]
+        public async Task<ActionResult> Create(Piece piece)
+        {
+            try
+            {
+                
+                await _pieceService.CreatePiece(piece);
+                
+                return StatusCode(StatusCodes.Status201Created, "Piece created successfully");
+            }
             catch 
             {
                 return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
 
             }
-          
-
         }
 
 

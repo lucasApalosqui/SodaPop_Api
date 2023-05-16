@@ -23,7 +23,9 @@ namespace SodaPop.Services
         {
             try
             {
+                piece.DateRelease = DateTime.Now;
                 _context.Tbl_Piece.Add(piece);
+               
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
