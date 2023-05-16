@@ -55,7 +55,6 @@ namespace SodaPop.Models
         public string Producer { get; set; }
 
         [Column("date_publish")]
-        [MaxLength(80)]
         public DateTime DatePublish { get; set; }
 
         public ICollection<Character> Characters { get; set; }
