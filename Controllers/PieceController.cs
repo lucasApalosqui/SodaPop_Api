@@ -119,20 +119,43 @@ namespace SodaPop.Controllers
 
         }
 
-        [HttpPost("CreatePiece")]
+        [HttpPost("Create")]
         public async Task<ActionResult> Create(Piece piece)
         {
             try
             {
-                
+
                 await _pieceService.CreatePiece(piece);
-                
+
                 return StatusCode(StatusCodes.Status201Created, "Piece created successfully");
             }
-            catch 
+            catch
             {
                 return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
 
+            }
+        }
+
+        [HttpPost("Update/{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] Piece piece)
+        {
+            try
+            {
+                if (piece.IdPiece == id)
+                {
+                    await _pieceService.UpdatePiece(piece);
+                    return StatusCode(StatusCodes.Status200OK, "Piece update successfully");
+
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
+                }
+            }
+            catch
+            {
+
+                return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
             }
         }
 
