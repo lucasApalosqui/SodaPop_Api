@@ -136,8 +136,8 @@ namespace SodaPop.Controllers
             }
         }
 
-        [HttpPost("Update/{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] Piece piece)
+        [HttpPut("Update/{id:int}")]
+        public async Task<ActionResult> UpdatePiece(int id, [FromBody] Piece piece)
         {
             try
             {
@@ -156,6 +156,30 @@ namespace SodaPop.Controllers
             {
 
                 return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
+            }
+        }
+
+        [HttpDelete("Delete")]
+        public async Task<ActionResult> DeletePiece(int id)
+        {
+            try
+            {
+                var aluno = await _pieceService.GetPieceById(id);
+                if (aluno != null)
+                {
+                    await _pieceService.DeletePiece(aluno);
+                    return StatusCode(StatusCodes.Status200OK, "Piece Deleted Successfully");
+
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "Invalid request");
+                }
+            }
+            catch
+            {
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Invalid request");
             }
         }
 
