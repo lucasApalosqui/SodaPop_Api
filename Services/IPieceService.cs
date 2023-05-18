@@ -1,4 +1,5 @@
 ﻿using SodaPop.Models;
+using SodaPop.Models.DTOs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,16 +10,16 @@ namespace SodaPop.Services
     public interface IPieceService
     {
         // Search all pieces in DB - for all pieces in db search
-        Task<IEnumerable<Piece>> GetAllPieces();
+        Task<IEnumerable<PieceDTO>> GetAllPieces();
 
         // Search Pieces by Id - for dev search, is not present in the website
-        Task<Piece> GetPieceById(int id);
+        Task<PieceDTO> GetPieceById(int id);
 
         // Search for all pieces that contain the specific name - written search by name
-        Task<IEnumerable<Piece>> GetPiecesByName(string name);
+        Task<IEnumerable<PieceDTO>> GetPiecesByName(string name);
 
         // Search for all pieces that contain the specific type - written search by type
-        Task<IEnumerable<Piece>> GetPiecesByType(string type);
+        Task<IEnumerable<PieceDTO>> GetPiecesByType(string type);
 
         // Search for the pieces with the highest average rating
         Task<IEnumerable<Piece>> GetPiecesByMostRated();
@@ -31,6 +32,6 @@ namespace SodaPop.Services
 
         // Delete a existing piece in a site
         Task DeletePiece(Piece piece);
-        
+
     }
 }

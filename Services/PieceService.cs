@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SodaPop.Context;
 using SodaPop.Models;
+using SodaPop.Models.DTOs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace SodaPop.Services
                
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;
@@ -42,7 +43,7 @@ namespace SodaPop.Services
                 _context.Tbl_Piece.Remove(piece);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;
@@ -50,16 +51,38 @@ namespace SodaPop.Services
         }
 
         // Get all pieces
-        public async Task<IEnumerable<Piece>> GetAllPieces()
+        public async Task<IEnumerable<PieceDTO>> GetAllPieces()
         {
             try
             {
-                return await _context.Tbl_Piece.ToListAsync();
+                var pieceDTO = _context.Tbl_Piece
+                    .Include(p => p.Characters)
+                    .Select(p => new PieceDTO
+                    {
+                        IdPiece = p.IdPiece,
+                        AverageScore = p.AverageScore,
+                        DatePublish = p.DatePublish,
+                        DateRelease = p.DateRelease,
+                        DescriptionPiece = p.DescriptionPiece,
+                        Director = p.Director,
+                        Duration = p.Duration,
+                        ImageBanner = p.ImageBanner,
+                        ImageFront = p.ImageFront,
+                        PieceName = p.PieceName,
+                        PieceType = p.PieceType,
+                        Producer = p.Producer,
+                        Characters = p.Characters.Select(c => new CharacterDTO { Id = c.Id, CharacterName = c.CharacterName,
+                                ImageCharacter = c.ImageCharacter}).ToList()
+
+                
+                    }).ToListAsync();
+                return await pieceDTO;
+
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
-                throw ex;
+                throw;
             }
             
 
@@ -67,18 +90,49 @@ namespace SodaPop.Services
 
 
         // Get Piece By Id
-        public async Task<Piece> GetPieceById(int Id)
+        public async Task<PieceDTO> GetPieceById(int Id)
         {
             try
             {
 
-                return await _context.Tbl_Piece.FindAsync(Id);
+                Piece piece = await _context.Tbl_Piece
+                    .Include(p => p.Characters)
+                    .FirstOrDefaultAsync(p => p.IdPiece == Id);
+                if (piece == null)
+                {
+                    return null;
+                }
+                
+                PieceDTO pieceDTO = new PieceDTO
+                {
+                    IdPiece = piece.IdPiece,
+                    AverageScore = piece.AverageScore,
+                    DatePublish = piece.DatePublish,
+                    DateRelease = piece.DateRelease,
+                    DescriptionPiece = piece.DescriptionPiece,
+                    Director = piece.Director,
+                    Duration = piece.Duration,
+                    ImageBanner = piece.ImageBanner,
+                    ImageFront = piece.ImageFront,
+                    PieceName = piece.PieceName,
+                    PieceType = piece.PieceType,
+                    Producer = piece.Producer,
+                    Characters = piece.Characters.Select(c => new CharacterDTO
+                    {
+                        Id = c.Id,
+                        CharacterName = c.CharacterName,
+                        ImageCharacter = c.ImageCharacter
+                    }).ToList()
+
+                };
+                return pieceDTO;
+
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
-                throw ex;
+                throw;
 
             }
 
@@ -93,23 +147,24 @@ namespace SodaPop.Services
                 piecesOrder = piecesOrder.OrderByDescending(p => p.AverageScore);
                 return piecesOrder;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
-                throw ex;
+                throw;
             }
             
         }
 
 
-        public async Task<IEnumerable<Piece>> GetPiecesByName(string name)
+        public async Task<IEnumerable<PieceDTO>> GetPiecesByName(string name)
         {
             try
             {
-                IEnumerable<Piece> piecesByName;
+                IEnumerable<PieceDTO> piecesByName;
                 if (string.IsNullOrEmpty(name))
                 {
-                    piecesByName = await _context.Tbl_Piece.Where(p => p.PieceName.Equals(name)).ToListAsync();
+                    //piecesByName = await _context.Tbl_Piece.Where(p => p.PieceName.Equals(name)).ToListAsync();
+                    piecesByName = await GetAllPieces();
 
 
                 }
@@ -120,21 +175,23 @@ namespace SodaPop.Services
 
                 return piecesByName;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
-                throw ex;
+                throw;
             }
         }
 
-        public async Task<IEnumerable<Piece>> GetPiecesByType(string type)
+
+        public async Task<IEnumerable<PieceDTO>> GetPiecesByType(string type)
         {
             try
             {
-                IEnumerable<Piece> piecesByType;
+                IEnumerable<PieceDTO> piecesByType;
                 if (string.IsNullOrEmpty(type))
                 {
-                    piecesByType = await _context.Tbl_Piece.Where(p => p.PieceType.Equals(type)).ToListAsync();
+                    //piecesByType = await _context.Tbl_Piece.Where(p => p.PieceType.Equals(type)).ToListAsync();
+                    piecesByType = await GetAllPieces();
                 }
                 else
                 {
@@ -142,10 +199,10 @@ namespace SodaPop.Services
                 }
                 return piecesByType;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
-                throw ex;
+                throw;
             }
         }
 
@@ -156,7 +213,7 @@ namespace SodaPop.Services
                 _context.Entry(piece).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;

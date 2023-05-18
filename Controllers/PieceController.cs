@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SodaPop.Models;
+using SodaPop.Models.DTOs;
 using SodaPop.Services;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +58,7 @@ namespace SodaPop.Controllers
         }
 
         [HttpGet("GetById")]
-        public async Task<ActionResult<Piece>> GetPieceById([FromQuery] int id)
+        public async Task<ActionResult<PieceDTO>> GetPieceById([FromQuery] int id)
         {
             try
             {
@@ -73,7 +74,7 @@ namespace SodaPop.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
+                throw;
 
             }
 
@@ -164,10 +165,10 @@ namespace SodaPop.Controllers
         {
             try
             {
-                var aluno = await _pieceService.GetPieceById(id);
-                if (aluno != null)
+                var piece = await _pieceService.GetPieceById(id);
+                if (piece != null)
                 {
-                    await _pieceService.DeletePiece(aluno);
+                    //await _pieceService.DeletePiece(piece);
                     return StatusCode(StatusCodes.Status200OK, "Piece Deleted Successfully");
 
                 }
