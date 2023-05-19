@@ -121,12 +121,12 @@ namespace SodaPop.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult> Create(Piece piece)
+        public async Task<ActionResult> Create(PieceCreateDTO pieceCreateDTO)
         {
             try
             {
 
-                await _pieceService.CreatePiece(piece);
+                await _pieceService.CreatePiece(pieceCreateDTO);
 
                 return StatusCode(StatusCodes.Status201Created, "Piece created successfully");
             }

@@ -25,7 +25,7 @@ namespace SodaPop.Services
         Task<IEnumerable<Piece>> GetPiecesByMostRated();
 
         // Create new piece in a site
-        Task CreatePiece(Piece piece);
+        Task CreatePiece(PieceCreateDTO pieceCreateDTO);
 
         // Update a existing piece in a site
         Task UpdatePiece(Piece piece);

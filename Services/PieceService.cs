@@ -20,10 +20,28 @@ namespace SodaPop.Services
             _context = context;
         }
 
-        public async Task CreatePiece(Piece piece)
+        public async Task CreatePiece(PieceCreateDTO pieceCreateDTO)
         {
             try
             {
+                Piece piece = new Piece
+                {
+                    PieceName = pieceCreateDTO.PieceName,
+                    PieceType = pieceCreateDTO.PieceType,
+                    ImageBanner = pieceCreateDTO.ImageBanner,
+                    ImageFront = pieceCreateDTO.ImageFront,
+                    DescriptionPiece = pieceCreateDTO.DescriptionPiece,
+                    AverageScore = pieceCreateDTO.AverageScore,
+                    Duration = pieceCreateDTO.Duration,
+                    Director = pieceCreateDTO.Director,
+                    Producer = pieceCreateDTO.Producer,
+                    DatePublish = pieceCreateDTO.DatePublish,
+                    Characters = pieceCreateDTO.Characters.Select(c => new Character
+                    {
+                        CharacterName = c.CharacterName,
+                        ImageCharacter = c.ImageCharacter
+                    }).ToList()
+                };
                 piece.DateRelease = DateTime.Now;
                 _context.Tbl_Piece.Add(piece);
                
@@ -71,10 +89,10 @@ namespace SodaPop.Services
                         PieceName = p.PieceName,
                         PieceType = p.PieceType,
                         Producer = p.Producer,
-                        Characters = p.Characters.Select(c => new CharacterDTO { Id = c.Id, CharacterName = c.CharacterName,
-                                ImageCharacter = c.ImageCharacter}).ToList()
-
-                
+                        Characters = p.Characters.Select(c => new CharacterDTO { 
+                            Id = c.Id, 
+                            CharacterName = c.CharacterName,
+                            ImageCharacter = c.ImageCharacter}).ToList()
                     }).ToListAsync();
                 return await pieceDTO;
 
