@@ -138,7 +138,7 @@ namespace SodaPop.Controllers
         }
 
         [HttpPut("Update/{id:int}")]
-        public async Task<ActionResult> UpdatePiece(int id, [FromBody] Piece piece)
+        public async Task<ActionResult> UpdatePiece(int id, [FromBody] PieceUpdateDTO piece)
         {
             try
             {
@@ -165,10 +165,10 @@ namespace SodaPop.Controllers
         {
             try
             {
-                var piece = await _pieceService.GetPieceById(id);
+                var piece = await _pieceService.GetPieceByIdForDelete(id);
                 if (piece != null)
                 {
-                    //await _pieceService.DeletePiece(piece);
+                    await _pieceService.DeletePiece(piece);
                     return StatusCode(StatusCodes.Status200OK, "Piece Deleted Successfully");
 
                 }

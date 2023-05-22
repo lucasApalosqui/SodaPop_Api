@@ -22,32 +22,12 @@ namespace SodaPop.Services
             _context = context;
         }
 
-        public async Task CreatePiece(PieceCreateDTO pieceCreateDTO)
+        public async Task<Piece> GetPieceByIdForDelete(int id)
         {
             try
             {
-                Piece piece = new Piece
-                {
-                    PieceName = pieceCreateDTO.PieceName,
-                    PieceType = pieceCreateDTO.PieceType,
-                    ImageBanner = pieceCreateDTO.ImageBanner,
-                    ImageFront = pieceCreateDTO.ImageFront,
-                    DescriptionPiece = pieceCreateDTO.DescriptionPiece,
-                    AverageScore = pieceCreateDTO.AverageScore,
-                    Duration = pieceCreateDTO.Duration,
-                    Director = pieceCreateDTO.Director,
-                    Producer = pieceCreateDTO.Producer,
-                    DatePublish = pieceCreateDTO.DatePublish,
-                    Characters = pieceCreateDTO.Characters.Select(c => new Character
-                    {
-                        CharacterName = c.CharacterName,
-                        ImageCharacter = c.ImageCharacter
-                    }).ToList()
-                };
-                piece.DateRelease = DateTime.Now;
-                _context.Tbl_Piece.Add(piece);
-               
-                await _context.SaveChangesAsync();
+                var piece = await _context.Tbl_Piece.FirstOrDefaultAsync(p => p.IdPiece == id);
+                return piece;
             }
             catch (Exception)
             {
@@ -230,46 +210,46 @@ namespace SodaPop.Services
 
         public async Task<IEnumerable<PieceDTO>> GetPiecesByType(string type)
         {
-                try
+            try
+            {
+                IEnumerable<PieceDTO> piecesByType = await GetAllPieces();
+                if (!string.IsNullOrEmpty(type))
                 {
-                    IEnumerable<PieceDTO> piecesByType = await GetAllPieces();
-                    if (!string.IsNullOrEmpty(type))
-                    {
 
-                        var piecesDTOByType = await _context.Tbl_Piece
-                            .Include(p => p.Characters)
-                            .Where(p => p.PieceType.Equals(type))
-                            .Select(p => new PieceDTO
-                            {
-                                IdPiece = p.IdPiece,
-                                AverageScore = p.AverageScore,
-                                DatePublish = p.DatePublish,
-                                DateRelease = p.DateRelease,
-                                DescriptionPiece = p.DescriptionPiece,
-                                Director = p.Director,
-                                Duration = p.Duration,
-                                ImageBanner = p.ImageBanner,
-                                ImageFront = p.ImageFront,
-                                PieceName = p.PieceName,
-                                PieceType = p.PieceType,
-                                Producer = p.Producer,
-                                Characters = p.Characters.Select(c => new CharacterDTO
-                                {
-                                    Id = c.Id,
-                                    CharacterName = c.CharacterName,
-                                    ImageCharacter = c.ImageCharacter
-                                }).ToList()
-                            }).ToListAsync();
-
-                        if (piecesDTOByType != null)
+                    var piecesDTOByType = await _context.Tbl_Piece
+                        .Include(p => p.Characters)
+                        .Where(p => p.PieceType.Equals(type))
+                        .Select(p => new PieceDTO
                         {
-                            piecesByType = piecesDTOByType;
-                        }
+                            IdPiece = p.IdPiece,
+                            AverageScore = p.AverageScore,
+                            DatePublish = p.DatePublish,
+                            DateRelease = p.DateRelease,
+                            DescriptionPiece = p.DescriptionPiece,
+                            Director = p.Director,
+                            Duration = p.Duration,
+                            ImageBanner = p.ImageBanner,
+                            ImageFront = p.ImageFront,
+                            PieceName = p.PieceName,
+                            PieceType = p.PieceType,
+                            Producer = p.Producer,
+                            Characters = p.Characters.Select(c => new CharacterDTO
+                            {
+                                Id = c.Id,
+                                CharacterName = c.CharacterName,
+                                ImageCharacter = c.ImageCharacter
+                            }).ToList()
+                        }).ToListAsync();
 
+                    if (piecesDTOByType != null)
+                    {
+                        piecesByType = piecesDTOByType;
                     }
 
-                    return piecesByType;
                 }
+
+                return piecesByType;
+            }
             catch (Exception)
             {
 
@@ -277,10 +257,58 @@ namespace SodaPop.Services
             }
         }
 
-        public async Task UpdatePiece(Piece piece)
+        public async Task CreatePiece(PieceCreateDTO pieceCreateDTO)
         {
             try
             {
+                Piece piece = new Piece
+                {
+                    PieceName = pieceCreateDTO.PieceName,
+                    PieceType = pieceCreateDTO.PieceType,
+                    ImageBanner = pieceCreateDTO.ImageBanner,
+                    ImageFront = pieceCreateDTO.ImageFront,
+                    DescriptionPiece = pieceCreateDTO.DescriptionPiece,
+                    AverageScore = pieceCreateDTO.AverageScore,
+                    Duration = pieceCreateDTO.Duration,
+                    Director = pieceCreateDTO.Director,
+                    Producer = pieceCreateDTO.Producer,
+                    DatePublish = pieceCreateDTO.DatePublish,
+                    Characters = pieceCreateDTO.Characters.Select(c => new Character
+                    {
+                        CharacterName = c.CharacterName,
+                        ImageCharacter = c.ImageCharacter
+                    }).ToList()
+                };
+                piece.DateRelease = DateTime.Now;
+                _context.Tbl_Piece.Add(piece);
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task UpdatePiece(PieceUpdateDTO pieceUpdateDTO)
+        {
+            try
+            {
+                Piece piece = new Piece
+                {
+                    IdPiece = pieceUpdateDTO.IdPiece,
+                    PieceName = pieceUpdateDTO.PieceName,
+                    PieceType = pieceUpdateDTO.PieceType,
+                    ImageBanner = pieceUpdateDTO.ImageBanner,
+                    ImageFront = pieceUpdateDTO.ImageFront,
+                    DescriptionPiece = pieceUpdateDTO.DescriptionPiece,
+                    AverageScore = pieceUpdateDTO.AverageScore,
+                    Duration = pieceUpdateDTO.Duration,
+                    Director = pieceUpdateDTO.Director,
+                    Producer = pieceUpdateDTO.Producer,
+                    DatePublish = pieceUpdateDTO.DatePublish
+                };
                 _context.Entry(piece).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }

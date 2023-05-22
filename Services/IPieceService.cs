@@ -28,10 +28,12 @@ namespace SodaPop.Services
         Task CreatePiece(PieceCreateDTO pieceCreateDTO);
 
         // Update a existing piece in a site
-        Task UpdatePiece(Piece piece);
+        Task UpdatePiece(PieceUpdateDTO piece);
 
         // Delete a existing piece in a site
         Task DeletePiece(Piece piece);
+
+        Task<Piece> GetPieceByIdForDelete(int id);
 
     }
 }
