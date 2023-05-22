@@ -104,7 +104,7 @@ namespace SodaPop.Controllers
         }
 
         [HttpGet("GetToMostRated")]
-        public async Task<ActionResult<IAsyncEnumerable<Piece>>> GetAllToMostRated()
+        public async Task<ActionResult<IAsyncEnumerable<PieceDTO>>> GetAllToMostRated()
         {
             try
             {

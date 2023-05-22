@@ -157,11 +157,11 @@ namespace SodaPop.Services
         }
 
         // get Pieces by descending most rated
-        public async Task<IEnumerable<Piece>> GetPiecesByMostRated()
+        public async Task<IEnumerable<PieceDTO>> GetPiecesByMostRated()
         {
             try
             {
-                IEnumerable<Piece> piecesOrder = await _context.Tbl_Piece.ToListAsync();
+                IEnumerable<PieceDTO> piecesOrder = await GetAllPieces();
                 piecesOrder = piecesOrder.OrderByDescending(p => p.AverageScore);
                 return piecesOrder;
             }
