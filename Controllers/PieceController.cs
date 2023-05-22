@@ -81,7 +81,7 @@ namespace SodaPop.Controllers
         }
 
         [HttpGet("GetByType")]
-        public async Task<ActionResult<IAsyncEnumerable<Piece>>> GetPieceByType([FromQuery] string type)
+        public async Task<ActionResult<IAsyncEnumerable<PieceDTO>>> GetPieceByType([FromQuery] string type)
         {
             try
             {

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO.Pipelines;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SodaPop.Services
 {
@@ -229,20 +230,46 @@ namespace SodaPop.Services
 
         public async Task<IEnumerable<PieceDTO>> GetPiecesByType(string type)
         {
-            try
-            {
-                IEnumerable<PieceDTO> piecesByType;
-                if (string.IsNullOrEmpty(type))
+                try
                 {
-                    //piecesByType = await _context.Tbl_Piece.Where(p => p.PieceType.Equals(type)).ToListAsync();
-                    piecesByType = await GetAllPieces();
+                    IEnumerable<PieceDTO> piecesByType = await GetAllPieces();
+                    if (!string.IsNullOrEmpty(type))
+                    {
+
+                        var piecesDTOByType = await _context.Tbl_Piece
+                            .Include(p => p.Characters)
+                            .Where(p => p.PieceType.Equals(type))
+                            .Select(p => new PieceDTO
+                            {
+                                IdPiece = p.IdPiece,
+                                AverageScore = p.AverageScore,
+                                DatePublish = p.DatePublish,
+                                DateRelease = p.DateRelease,
+                                DescriptionPiece = p.DescriptionPiece,
+                                Director = p.Director,
+                                Duration = p.Duration,
+                                ImageBanner = p.ImageBanner,
+                                ImageFront = p.ImageFront,
+                                PieceName = p.PieceName,
+                                PieceType = p.PieceType,
+                                Producer = p.Producer,
+                                Characters = p.Characters.Select(c => new CharacterDTO
+                                {
+                                    Id = c.Id,
+                                    CharacterName = c.CharacterName,
+                                    ImageCharacter = c.ImageCharacter
+                                }).ToList()
+                            }).ToListAsync();
+
+                        if (piecesDTOByType != null)
+                        {
+                            piecesByType = piecesDTOByType;
+                        }
+
+                    }
+
+                    return piecesByType;
                 }
-                else
-                {
-                    piecesByType = await GetAllPieces();
-                }
-                return piecesByType;
-            }
             catch (Exception)
             {
 
