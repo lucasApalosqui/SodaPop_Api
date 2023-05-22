@@ -36,7 +36,7 @@ namespace SodaPop.Controllers
         }
 
         [HttpGet("GetByName")]
-        public async Task<ActionResult<IAsyncEnumerable<Piece>>> GetPieceByName([FromQuery] string name)
+        public async Task<ActionResult<IAsyncEnumerable<PieceDTO>>> GetPieceByName([FromQuery] string name)
         {
             try
             {

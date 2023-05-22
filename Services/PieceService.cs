@@ -5,6 +5,7 @@ using SodaPop.Models.DTOs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Pipelines;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -178,18 +179,43 @@ namespace SodaPop.Services
         {
             try
             {
-                IEnumerable<PieceDTO> piecesByName;
-                if (string.IsNullOrEmpty(name))
+                IEnumerable<PieceDTO> piecesByName = await GetAllPieces();
+                if (!string.IsNullOrEmpty(name))
                 {
-                    //piecesByName = await _context.Tbl_Piece.Where(p => p.PieceName.Equals(name)).ToListAsync();
-                    piecesByName = await GetAllPieces();
 
+                    var piecesDTOByName = await _context.Tbl_Piece
+                        .Include(p => p.Characters)
+                        .Where(p => p.PieceName.Equals(name))
+                        .Select(p => new PieceDTO
+                        {
+                            IdPiece = p.IdPiece,
+                            AverageScore = p.AverageScore,
+                            DatePublish = p.DatePublish,
+                            DateRelease = p.DateRelease,
+                            DescriptionPiece = p.DescriptionPiece,
+                            Director = p.Director,
+                            Duration = p.Duration,
+                            ImageBanner = p.ImageBanner,
+                            ImageFront = p.ImageFront,
+                            PieceName = p.PieceName,
+                            PieceType = p.PieceType,
+                            Producer = p.Producer,
+                            Characters = p.Characters.Select(c => new CharacterDTO
+                            {
+                                Id = c.Id,
+                                CharacterName = c.CharacterName,
+                                ImageCharacter = c.ImageCharacter
+                            }).ToList()
+                        }).ToListAsync();
+
+                    if (piecesDTOByName != null)
+                    {
+                        piecesByName = piecesDTOByName;
+                    }
 
                 }
-                else
-                {
-                    piecesByName = await GetAllPieces();
-                }
+
+
 
                 return piecesByName;
             }
