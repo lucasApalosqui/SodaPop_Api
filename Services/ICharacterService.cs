@@ -20,6 +20,8 @@ namespace SodaPop.Services
 
         Task DeleteCharacter(Character character);
 
+        Task<Character> GetCharacterForDelete(int id);
+
 
     }
 }

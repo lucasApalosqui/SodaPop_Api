@@ -21,13 +21,13 @@ namespace SodaPop.Controllers
         {
             _service = service;
 
-          
+
         }
 
 
 
         [HttpGet("GetAll")]
-        
+
         public async Task<ActionResult<IAsyncEnumerable<CharacterDTO>>> GetAllCharacters()
         {
             try
@@ -39,6 +39,30 @@ namespace SodaPop.Controllers
             catch
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error while get characters");
+            }
+        }
+
+        [HttpDelete("DeletePiece")]
+        public async Task<ActionResult> DeleteCharacter(int id)
+        {
+            try
+            {
+                var character = await _service.GetCharacterForDelete(id);
+                if (character != null)
+                {
+                    await _service.DeleteCharacter(character);
+                    return StatusCode(StatusCodes.Status200OK, "Character Deleted Successfully");
+                }
+
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "Invalid request");
+                }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
             }
         }
     }

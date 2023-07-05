@@ -37,7 +37,7 @@ namespace SodaPop.Services
 
 
             }
-            catch(Exception)
+            catch (Exception)
             {
 
                 throw;
@@ -88,7 +88,7 @@ namespace SodaPop.Services
             try
             {
                 _context.Entry(character).State = EntityState.Modified;
-                await  _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -97,12 +97,12 @@ namespace SodaPop.Services
             }
         }
 
-        public async Task DeleteCharacter(Character character)
+        public async Task<Character> GetCharacterForDelete(int id)
         {
             try
             {
-                _context.Remove(character);
-                await _context.SaveChangesAsync();
+                var character = await _context.Tbl_Character.FirstOrDefaultAsync(c => c.Id == id);
+                return character;
             }
             catch (Exception)
             {
@@ -110,6 +110,20 @@ namespace SodaPop.Services
                 throw;
             }
 
+        }
+
+        public async Task DeleteCharacter(Character character)
+        {
+            try
+            {
+                _context.Tbl_Character.Remove(character);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
 
