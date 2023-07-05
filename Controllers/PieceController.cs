@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SodaPop.Models;
 using SodaPop.Models.DTOs;
 using SodaPop.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -78,6 +79,28 @@ namespace SodaPop.Controllers
 
             }
 
+        }
+
+        [HttpGet("GetAllCharactersPiece")]
+        public async Task<ActionResult<PieceCharacterDTO>> GetAllCharactersByPiece([FromQuery] int id)
+        {
+            try
+            {
+                var pieceCharacter = await _pieceService.GetAllCharactersByPiece(id);
+                if (pieceCharacter == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, $"The piece with id {id} is not found");
+                }
+                else
+                {
+                    return Ok(pieceCharacter);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         [HttpGet("GetByType")]

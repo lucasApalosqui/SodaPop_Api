@@ -35,5 +35,6 @@ namespace SodaPop.Services
 
         Task<Piece> GetPieceByIdForDelete(int id);
 
+        Task<PieceCharacterDTO> GetAllCharactersByPiece(int id);
     }
 }

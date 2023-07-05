@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SodaPop.Context;
 using SodaPop.Models;
+using SodaPop.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SodaPop.Services
@@ -17,14 +20,24 @@ namespace SodaPop.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Character>> GetAllCharacters()
+        public async Task<IEnumerable<CharacterDTO>> GetAllCharacters()
         {
             try
             {
-                return await _context.Tbl_Character.ToListAsync();
+                var characterDTO = _context.Tbl_Character
+                    .Select(c => new CharacterDTO
+                    {
+                        Id = c.Id,
+                        CharacterName = c.CharacterName,
+                        ImageCharacter = c.ImageCharacter
+                    }).ToListAsync();
+
+
+                return await characterDTO;
+
 
             }
-            catch
+            catch(Exception)
             {
 
                 throw;

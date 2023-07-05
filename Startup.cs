@@ -13,6 +13,7 @@ using SodaPop.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SodaPop
@@ -34,6 +35,8 @@ namespace SodaPop
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IPieceService, PieceService>();
+            services.AddScoped<ICharacterService, CharacterService>();
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

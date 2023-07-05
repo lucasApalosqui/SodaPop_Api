@@ -22,6 +22,38 @@ namespace SodaPop.Services
             _context = context;
         }
 
+        public async Task<PieceCharacterDTO> GetAllCharactersByPiece(int id)
+        {
+            try
+            {
+                Piece piece = await _context.Tbl_Piece
+                    .Include(p => p.Characters)
+                    .FirstOrDefaultAsync(p => p.IdPiece == id);
+
+                if (piece == null)
+                {
+                    return null;
+                }
+
+                PieceCharacterDTO pieceCharacterDTO = new PieceCharacterDTO
+                {
+                    Characters = piece.Characters.Select(c => new CharacterDTO
+                    {
+                        Id = c.Id,
+                        CharacterName = c.CharacterName,
+                        ImageCharacter = c.ImageCharacter
+                    }).ToList()
+                };
+                return pieceCharacterDTO;
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<Piece> GetPieceByIdForDelete(int id)
         {
             try

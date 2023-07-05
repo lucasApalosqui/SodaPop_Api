@@ -5,6 +5,8 @@ using SodaPop.Models.DTOs;
 using SodaPop.Services;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SodaPop.Controllers
@@ -18,7 +20,11 @@ namespace SodaPop.Controllers
         public CharacterController(ICharacterService service)
         {
             _service = service;
+
+          
         }
+
+
 
         [HttpGet("GetAll")]
         
@@ -27,6 +33,7 @@ namespace SodaPop.Controllers
             try
             {
                 var characters = _service.GetAllCharacters();
+
                 return Ok(characters);
             }
             catch
