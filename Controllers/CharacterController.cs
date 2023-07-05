@@ -25,12 +25,12 @@ namespace SodaPop.Controllers
         }
 
 
-        [HttpDelete("DeletePiece")]
+        [HttpDelete("DeleteCharacter")]
         public async Task<ActionResult> DeleteCharacter(int id)
         {
             try
             {
-                var character = await _service.GetCharacterForDelete(id);
+                Character character = await _service.GetCharacterForDelete(id);
                 if (character != null)
                 {
                     await _service.DeleteCharacter(character);
@@ -41,6 +41,29 @@ namespace SodaPop.Controllers
                 {
                     return StatusCode(StatusCodes.Status400BadRequest, "Invalid request");
                 }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPut("Update/{id:int}")]
+        public async Task<ActionResult> UpdateCharacter(int id, [FromBody] CharacterUpdateDTO character)
+        {
+            try
+            {
+                if (character.Id == id)
+                {
+                    await _service.UpdateCharacter(character);
+                    return StatusCode(StatusCodes.Status200OK, "Character update successfully");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
+                }
+
             }
             catch (System.Exception)
             {

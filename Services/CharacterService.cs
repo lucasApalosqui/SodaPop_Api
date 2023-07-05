@@ -21,49 +21,18 @@ namespace SodaPop.Services
         }
 
 
-        public async Task<Character> GetCharacterById(int id)
+        public async Task UpdateCharacter(CharacterUpdateDTO characterUpdateDTO)
         {
             try
             {
-                return await _context.Tbl_Character.FindAsync(id);
-            }
-            catch (Exception)
-            {
+                Character character = new Character
+                {
+                    IdPiece = characterUpdateDTO.IdPiece,
+                    Id = characterUpdateDTO.Id,
+                    CharacterName = characterUpdateDTO.CharacterName,
+                    ImageCharacter = characterUpdateDTO.ImageCharacter
+                };
 
-                throw;
-            }
-        }
-
-        public async Task<IEnumerable<Character>> GetByPiece(int id)
-        {
-            try
-            {
-                return await _context.Tbl_Character.Where(c => c.IdPiece == id).ToListAsync();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        public async Task<IEnumerable<Character>> GetCharacterByName(string name)
-        {
-            try
-            {
-                return await _context.Tbl_Character.Where(c => c.CharacterName == name).ToListAsync();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        public async Task UpdateCharacter(Character character)
-        {
-            try
-            {
                 _context.Entry(character).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
