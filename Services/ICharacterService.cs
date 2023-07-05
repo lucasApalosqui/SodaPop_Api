@@ -8,8 +8,7 @@ namespace SodaPop.Services
 {
     public interface ICharacterService
     {
-        Task<IEnumerable<CharacterDTO>> GetAllCharacters();
-
+        
         Task<Character> GetCharacterById(int id);
 
         Task<IEnumerable<Character>> GetCharacterByName(string name);

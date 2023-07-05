@@ -20,29 +20,6 @@ namespace SodaPop.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<CharacterDTO>> GetAllCharacters()
-        {
-            try
-            {
-                var characterDTO = _context.Tbl_Character
-                    .Select(c => new CharacterDTO
-                    {
-                        Id = c.Id,
-                        CharacterName = c.CharacterName,
-                        ImageCharacter = c.ImageCharacter
-                    }).ToListAsync();
-
-
-                return await characterDTO;
-
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
 
         public async Task<Character> GetCharacterById(int id)
         {

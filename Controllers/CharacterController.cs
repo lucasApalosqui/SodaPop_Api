@@ -25,23 +25,6 @@ namespace SodaPop.Controllers
         }
 
 
-
-        [HttpGet("GetAll")]
-
-        public async Task<ActionResult<IAsyncEnumerable<CharacterDTO>>> GetAllCharacters()
-        {
-            try
-            {
-                var characters = _service.GetAllCharacters();
-
-                return Ok(characters);
-            }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error while get characters");
-            }
-        }
-
         [HttpDelete("DeletePiece")]
         public async Task<ActionResult> DeleteCharacter(int id)
         {
